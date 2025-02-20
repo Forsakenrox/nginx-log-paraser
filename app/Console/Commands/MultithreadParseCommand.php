@@ -37,7 +37,7 @@ class MultithreadParseCommand extends Command
     {
         ini_set('memory_limit', '2048M');
         $baseBath = base_path();
-        $inputFilePath = storage_path('app/private/rlsnet.ru.access.log-20250131');
+        $inputFilePath = storage_path('app/private/access.log');
         $fileSize = filesize($inputFilePath);
         $this->info('Start parsing...');
 
@@ -49,6 +49,7 @@ class MultithreadParseCommand extends Command
         Artisan::call('migrate:fresh');
         // RequestLog::truncate();
         // Ipclient::truncate();
+
         $regexp = '/^((?:\d+\.?){4}) - - \[(.*)\] \"(GET|PUT|PATCH|HEAD|DELETE|POST|PROPFIND|OPTIONS)\s(.*?)\s(.*?)\" ([1-5][0-9][0-9]) (\d+) \"(.*?)\" \"(.*?)\"$/';
         if ($handle) {
             $countOfIps = 0;
@@ -77,7 +78,6 @@ class MultithreadParseCommand extends Command
                 $events[$i]->addChannel($channels[$i]);
                 $events[$i]->setBlocking(false);
             }
-
             $worker = function ($id, Channel $channel) {
                 ini_set('memory_limit', '2048M');
                 $pdo = null;
