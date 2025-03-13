@@ -36,7 +36,10 @@ class CheckIpCommand extends Command
         $progress->start();
 
         $parsedIp = ParsedIp::chunk(5000, function ($ips) use ($country, $progress) {
-            foreach ($ips as $ip) {
+            foreach ($ips as $i => $ip) {
+                // if ($i < 1294) {
+                //     continue;
+                // }
                 try {
                     $base = $country->country($ip->ip_address);
                     $ip->country = $base->country->names['en'];

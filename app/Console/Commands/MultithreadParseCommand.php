@@ -156,7 +156,6 @@ class MultithreadParseCommand extends Command
                         $countOfIps++;
                         $handledIps[$item['ip_address']] = $countOfIps;
                     }
-                    $item['parsed_ip_id'] = $countOfIps;
 
                     if (!isset($handledUrls[$item['url']])) {
                         $countOfUrls++;
@@ -168,7 +167,6 @@ class MultithreadParseCommand extends Command
                         ];
                     }
                     $handledUrls[$item['url']]['hits_count']++;
-                    $item['parsed_ip_id'] = $countOfUrls;
 
                     if (!isset($handledReferers[$item['http_referer']])) {
                         $countOfReferers++;
@@ -297,6 +295,7 @@ class MultithreadParseCommand extends Command
                 $logs = [];
             }
             $progress->finish();
+
             foreach ($channels as $channel) {
                 $channel->recv();
                 $channel->send('break');
